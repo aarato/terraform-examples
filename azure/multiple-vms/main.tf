@@ -5,10 +5,15 @@ provider "azurerm" {
 }
 
 # Existing variables...
-# set TF_VAR_ARM_SUBSCRIPTION_ID="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-# $env:TF_VAR_ARM_SUBSCRIPTION_ID = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-# export TF_VAR_ARM_SUBSCRIPTION_ID="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
 variable "ARM_SUBSCRIPTION_ID" {
+  type = string
+}
+
+variable "ARM_RESOURCE_GROUP" {
+  type = string
+}
+
+variable "ARM_SSH_KEY" {
   type = string
 }
 
@@ -46,16 +51,14 @@ variable "subnet_prefixes" {
 }
 
 
-
-
 # Reference an existing resource group
 data "azurerm_resource_group" "rg" {
-  name = "RG_2128_Aarato_2" # Replace with your existing resource group name
+  name = var.ARM_RESOURCE_GROUP # Replace with your existing resource group name
 }
 
 # Reference an existing SSH key in the resource group
 data "azurerm_ssh_public_key" "ssh_key" {
-  name                = "mysshkey" # Replace with your existing SSH key name
+  name                = var.ARM_SSH_KEY
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
